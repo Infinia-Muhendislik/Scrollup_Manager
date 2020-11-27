@@ -1,37 +1,37 @@
-var $ = require("jquery");
+const axios = require("axios");
 var target = "http://127.0.0.1:3000";
 var play = false;
 var loop = false;
 var state;
 
 var init = function () {
-  $.post(target + "/init/", { playerName: "Manager" }, function (data) {
-    state = JSON.parse(data);
+  axios.post(target + "/init/", { playerName: "Manager" }).then((res) => {
+    return res.data;
   });
 };
 var togglePlay = function () {
-  $.post(target + "/play/", { val: !play }, function (data) {
-    state = JSON.parse(data);
-    play = state.play;
+  axios.post(target + "/play/", { val: !play }).then((res) => {
+    play = res.data.play;
     console.log("Play set " + play);
-  });
-};
-var toggleStop = function () {
-  $.post(target + "/stop/", { playerName: "Manager" }, function (data) {
-    state = JSON.parse(data);
+    return res.data;
   });
 };
 var toggleLoop = function () {
-  $.post(target + "/loop/", { val: !loop }, function (data) {
-    state = JSON.parse(data);
-    loop = state.loop;
+  axios.post(target + "/loop/", { val: !loop }).then((res) => {
+    loop = res.data.play;
     console.log("Loop set " + play);
+    return res.data;
+  });
+};
+var toggleStop = function () {
+  axios.post(target + "/stop/", { playerName: "Manager" }).then((res) => {
+    return res.data;
   });
 };
 var brightness = function (val) {
-  $.post(target + "/brightness/", { brightness: val }, function (data) {
+  axios.post(target + "/brightness/", { brightness: val }).then((res) => {
     console.log("Parlaklık set to" + val);
-    state = JSON.parse(data);
+    return res.data;
   });
 };
 var setSize = function (width, height) {
@@ -39,32 +39,30 @@ var setSize = function (width, height) {
     width: width,
     height: height,
   };
-  $.post(target + "/screenSize/", screen, function (data) {
-    state = JSON.parse(data);
+  axios.post(target + "/screenSize/", screen).then((res) => {
+    return res.data;
   });
 };
 var deleteMedia = function (id) {
-  $.post(target + "/deleteMedia/", { id: id }, function (data) {
-    state = JSON.parse(data);
+  axios.post(target + "/deleteMedia/", { id: id }).then((res) => {
+    return res.data;
   });
 };
 var updateDuration = function (id, duration) {
-  $.post(
-    target + "/updateDuration/",
-    { id: id, duration: duration },
-    function (data) {
-      state = JSON.parse(data);
-    }
-  );
+  axios
+    .post(target + "/updateDuration/", { id: id, duration: duration })
+    .then((res) => {
+      return res.data;
+    });
 };
 var updateList = function (id, to) {
-  $.post(target + "/updateList/", { id: id, to: to }, function (data) {
-    state = JSON.parse(data);
+  axios.post(target + "/updateList/", { id: id, to: to }).then((res) => {
+    return res.data;
   });
 };
 var playFrom = function (index) {
-  $.post(target + "/playFrom/", { index: index }, function (data) {
-    state = JSON.parse(data);
+  axios.post(target + "/playFrom/", { index: index }).then((res) => {
+    return res.data;
   });
 };
 var uploadFile = function (selectedFile) {
@@ -81,4 +79,7 @@ var checkState = function () {
   console.log("lalala");
 };
 
-var timer = setInterval(checkState, 1000);
+//var timer = setInterval(checkState, 1000);
+
+// console.log(toggleLoop());
+console.log(togglePlay());
