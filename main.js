@@ -76,3 +76,9 @@ var uploadFile = function (selectedFile) {
     body: formData,
   });
 };
+
+var checkState = function () {
+  console.log("lalala");
+};
+
+var timer = setInterval(checkState, 1000);
