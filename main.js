@@ -6,7 +6,7 @@ var state;
 require("dotenv").config();
 const { spawn, exec } = require("child_process");
 
-exec("./home/pi/player.sh", (error, stdout, stderr) => {
+exec("./player.sh", (error, stdout, stderr) => {
   if (error) {
     console.log(`error: ${error.message}`);
     return;
