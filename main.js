@@ -88,28 +88,25 @@ async function checkState() {
       console.log(remoteList);
       for (let index = 0; index < remoteList.length; index++) {
         const fileName = remoteList[index].media_url.split("/").pop();
-        // const path = Path.resolve(__dirname, "media", fileName);
-        const path = Path.resolve("../remote_media_player/app/media", fileName); //save directly to player
+        const path = Path.resolve(__dirname, "media", fileName);
+        // const path = Path.resolve("../remote_media_player/app/media", fileName); //save directly to player
         const fstream = Fs.createWriteStream(path);
         var uri = server + remoteList[index].media_url + "/";
         const config = {
           method: "get",
           responseType: "stream",
         };
-        axios
-          .get(uri, config)
-          .then(function (res) {
-            res.data.pipe(fstream);
-          })
-          .then(() => {
-            console.log(fileName + " indirildi");
-            // var sendFile = Fs.createReadStream(path);
-            // const formData = new FormData();
-            // formData.append("file", sendFile);
-            // axios
-            //   .post(target + "/upload/" + fileName, formData)
-            //   .then(() => console.log("Gönderildi: " + fileName));
-          });
+        axios.get(uri, config).then(function (res) {
+          res.data.pipe(fstream);
+        });
+        fstream.on("close", function () {
+          // var sendFile = Fs.createReadStream(path);
+          // const formData = new FormData();
+          // formData.append("file", sendFile);
+          // axios
+          //   .post(target + "/upload/" + fileName, formData)
+          //   .then(() => console.log("Gönderildi: " + fileName));
+        });
       }
     });
 }
