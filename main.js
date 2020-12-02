@@ -3,6 +3,10 @@ var target = "http://127.0.0.1:3000";
 var play = false;
 var loop = false;
 var state;
+require("dotenv").config();
+
+var scrollupID = process.env.ID;
+console.log(scrollupID);
 
 var init = function () {
   axios.post(target + "/init/", { playerName: "Manager" }).then((res) => {
@@ -66,7 +70,7 @@ var playFrom = function (index) {
   });
 };
 var uploadFile = function (selectedFile) {
-  //TODO TEST_THıS
+  //TODO TEST_THıS.
   const formData = new FormData();
   formData.append("file", selectedFile);
   fetch(target + "/upload/" + selectedFile.name, {
