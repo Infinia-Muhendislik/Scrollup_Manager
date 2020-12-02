@@ -1,4 +1,4 @@
-cd /home/pi/Scrollup_Manager/ # go folder
+cd /home/pi/remote_media_player/ # go folder
 git fetch --all # check update
 git reset --hard origin/master # pull update and ignore stash
 npm install # install dependecies
