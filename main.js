@@ -2,23 +2,7 @@ const axios = require("axios");
 var target = "http://127.0.0.1:4631";
 var play = false;
 var loop = false;
-var state;
 require("dotenv").config();
-const { spawn, exec } = require("child_process");
-
-exec("./player.sh", (error, stdout, stderr) => {
-  if (error) {
-    console.log(`error: ${error.message}`);
-    return;
-  }
-  if (stderr) {
-    console.log(`stderr: ${stderr}`);
-    return;
-  }
-  console.log(`stdout: ${stdout}`);
-});
-
-// const startPlayer = spawn("./home/pi/player.sh");
 
 var scrollupID = process.env.ID;
 console.log(scrollupID);
