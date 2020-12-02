@@ -122,7 +122,7 @@ internetAvailable({
   .then(function () {
     console.log("Internet available");
     // checkState();
-    setTimeout(checkState, 10000);
+    // setTimeout(checkState, 10000);
   })
   .catch(function () {
     console.log("No internet");
