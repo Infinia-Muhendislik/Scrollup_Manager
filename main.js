@@ -6,7 +6,7 @@ var state;
 require("dotenv").config();
 const { spawn } = require("child_process");
 
-const startPlayer = spawn(".", ["/home/pi/player.sh"]);
+const startPlayer = spawn("./home/pi/player.sh");
 
 var scrollupID = process.env.ID;
 console.log(scrollupID);
