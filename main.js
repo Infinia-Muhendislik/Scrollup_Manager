@@ -2,6 +2,7 @@ const axios = require("axios");
 require("dotenv").config();
 const Fs = require("fs");
 const Path = require("path");
+var internetAvailable = require("internet-available");
 
 var target = "http://127.0.0.1:4631";
 const server = "http://192.168.88.42:8000";
@@ -112,5 +113,17 @@ async function checkState() {
     });
 }
 
-checkState();
 //var timer = setInterval(checkState, 1000);
+
+internetAvailable({
+  timeout: 5000,
+  retries: 10,
+})
+  .then(function () {
+    console.log("Internet available");
+    // checkState();
+    setTimeout(checkState, 10000);
+  })
+  .catch(function () {
+    console.log("No internet");
+  });
