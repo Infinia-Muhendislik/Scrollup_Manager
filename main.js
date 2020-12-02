@@ -1,12 +1,14 @@
 const axios = require("axios");
-var target = "http://127.0.0.1:4631";
+require("dotenv").config();
+const Fs = require("fs");
+const Path = require("path");
+var FormData = require("form-data");
+
+var target = "http://192.168.56.1:4631";
 const server = "http://192.168.88.42:8000";
 var remoteList;
 var play = false;
 var loop = false;
-require("dotenv").config();
-const Fs = require("fs");
-const Path = require("path");
 
 var scrollupID = process.env.ID;
 console.log(scrollupID);
@@ -74,16 +76,6 @@ var playFrom = function (index) {
   });
 };
 
-var uploadFile = function (selectedFile) {
-  //TODO TEST
-  const formData = new FormData();
-  formData.append("file", selectedFile);
-  fetch(target + "/upload/" + selectedFile.name, {
-    method: "POST",
-    body: formData,
-  });
-};
-
 async function checkState() {
   axios
     .get(server + "/api/oynatma-listesi/", {
@@ -103,9 +95,20 @@ async function checkState() {
           method: "get",
           responseType: "stream",
         };
-        axios.get(uri, config).then(function (res) {
-          res.data.pipe(fstream);
-        });
+        axios
+          .get(uri, config)
+          .then(function (res) {
+            res.data.pipe(fstream);
+          })
+          .then(() => {
+            console.log(fileName + " indirildi");
+            // var sendFile = Fs.createReadStream(path);
+            // const formData = new FormData();
+            // formData.append("file", sendFile);
+            // axios
+            //   .post(target + "/upload/" + fileName, formData)
+            //   .then(() => console.log("Gönderildi: " + fileName));
+          });
       }
     });
 }
