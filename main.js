@@ -1,8 +1,12 @@
 const axios = require("axios");
 var target = "http://127.0.0.1:4631";
+const server = "http://192.168.88.42:8000";
+var remoteList;
 var play = false;
 var loop = false;
 require("dotenv").config();
+const Fs = require("fs");
+const Path = require("path");
 
 var scrollupID = process.env.ID;
 console.log(scrollupID);
@@ -69,6 +73,7 @@ var playFrom = function (index) {
     return res.data;
   });
 };
+
 var uploadFile = function (selectedFile) {
   //TODO TEST
   const formData = new FormData();
@@ -79,7 +84,31 @@ var uploadFile = function (selectedFile) {
   });
 };
 
-var checkState = function () {
-  console.log("lalala");
-};
+async function checkState() {
+  axios
+    .get(server + "/api/oynatma-listesi/", {
+      params: {
+        slug: scrollupID,
+      },
+    })
+    .then((res) => {
+      remoteList = res.data;
+      console.log(remoteList);
+      for (let index = 0; index < remoteList.length; index++) {
+        const fileName = remoteList[index].media_url.split("/").pop();
+        const path = Path.resolve(__dirname, "media", fileName);
+        const fstream = Fs.createWriteStream(path);
+        var uri = server + remoteList[index].media_url + "/";
+        const config = {
+          method: "get",
+          responseType: "stream",
+        };
+        axios.get(uri, config).then(function (res) {
+          res.data.pipe(fstream);
+        });
+      }
+    });
+}
+
+checkState();
 //var timer = setInterval(checkState, 1000);
