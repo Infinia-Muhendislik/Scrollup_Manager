@@ -79,7 +79,7 @@ var readFile = function (name, duration) {
   axios
     .post(target + "/readFile/", { fileName: name, duration: duration })
     .then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
     });
 };
 
