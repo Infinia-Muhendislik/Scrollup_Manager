@@ -4,9 +4,21 @@ var play = false;
 var loop = false;
 var state;
 require("dotenv").config();
-const { spawn } = require("child_process");
+const { spawn, exec } = require("child_process");
 
-const startPlayer = spawn("./home/pi/player.sh");
+exec("./home/pi/player.sh", (error, stdout, stderr) => {
+  if (error) {
+    console.log(`error: ${error.message}`);
+    return;
+  }
+  if (stderr) {
+    console.log(`stderr: ${stderr}`);
+    return;
+  }
+  console.log(`stdout: ${stdout}`);
+});
+
+// const startPlayer = spawn("./home/pi/player.sh");
 
 var scrollupID = process.env.ID;
 console.log(scrollupID);
