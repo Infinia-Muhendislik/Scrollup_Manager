@@ -33,12 +33,14 @@ var toggleStop = function () {
   });
 };
 var brightness = function (val) {
+  //TODO TEST
   axios.post(target + "/brightness/", { brightness: val }).then((res) => {
     console.log("Parlaklık set to" + val);
     return res.data;
   });
 };
 var setSize = function (width, height) {
+  //TODO TEST
   let screen = {
     width: width,
     height: height,
@@ -48,11 +50,13 @@ var setSize = function (width, height) {
   });
 };
 var deleteMedia = function (id) {
+  //TODO TEST
   axios.post(target + "/deleteMedia/", { id: id }).then((res) => {
     return res.data;
   });
 };
 var updateDuration = function (id, duration) {
+  //TODO TEST
   axios
     .post(target + "/updateDuration/", { id: id, duration: duration })
     .then((res) => {
@@ -60,17 +64,19 @@ var updateDuration = function (id, duration) {
     });
 };
 var updateList = function (id, to) {
+  //TODO TEST
   axios.post(target + "/updateList/", { id: id, to: to }).then((res) => {
     return res.data;
   });
 };
 var playFrom = function (index) {
+  //TODO TEST
   axios.post(target + "/playFrom/", { index: index }).then((res) => {
     return res.data;
   });
 };
 var uploadFile = function (selectedFile) {
-  //TODO TEST_THıS.
+  //TODO TEST
   const formData = new FormData();
   formData.append("file", selectedFile);
   fetch(target + "/upload/" + selectedFile.name, {
@@ -86,4 +92,4 @@ var checkState = function () {
 //var timer = setInterval(checkState, 1000);
 
 // console.log(toggleLoop());
-console.log(togglePlay());
+// console.log(togglePlay());
