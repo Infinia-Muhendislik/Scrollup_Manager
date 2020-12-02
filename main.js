@@ -2,9 +2,8 @@ const axios = require("axios");
 require("dotenv").config();
 const Fs = require("fs");
 const Path = require("path");
-var FormData = require("form-data");
 
-var target = "http://192.168.56.1:4631";
+var target = "http://127.0.0.1:4631";
 const server = "http://192.168.88.42:8000";
 var remoteList;
 var play = false;
