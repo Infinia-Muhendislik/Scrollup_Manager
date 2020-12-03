@@ -96,6 +96,7 @@ async function checkState() {
       for (let index = 0; index < remoteList.length; index++) {
         const fileName = remoteList[index].media_url.split("/").pop();
         // const path = Path.resolve(__dirname, "media", fileName);
+
         const path = Path.resolve(
           "../remote_media_player/app/media",
           fileName.replace(/\s/g, "")
@@ -110,7 +111,7 @@ async function checkState() {
           res.data.pipe(fstream);
         });
         fstream.on("close", function () {
-          readFile(fileName, remoteList[index].screen_time);
+          readFile(fileName, remoteList[index].duration);
         });
       }
     });
@@ -131,3 +132,10 @@ internetAvailable({
     console.log("No internet");
     global.clearTimeout(timer);
   });
+
+function isExist(fileName, arr) {
+  for (let index = 0; index < arr.length; index++) {
+    if (fileName == arr[index].fileName.split("/").pop()) return true;
+  }
+  return false;
+}
