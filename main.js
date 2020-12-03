@@ -113,7 +113,7 @@ async function checkState() {
                   method: "get",
                   responseType: "stream",
                 };
-                console.log("istek gönderiliyor");
+                console.log(fileName + " istek gönderiliyor");
                 axios.get(uri, config).then(function (res) {
                   res.data.pipe(fstream);
                 });
@@ -130,7 +130,7 @@ async function checkState() {
 
 //var timer = setInterval(checkState, 1000);
 var timer;
-brightness(6);
+setTimeout(() => brightness(6), 10000);
 internetAvailable({
   timeout: 5000,
   retries: 10,
