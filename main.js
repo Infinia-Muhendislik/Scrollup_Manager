@@ -102,29 +102,28 @@ async function checkState() {
           function (err, dir) {
             if (err) console.log(err);
             else {
-              filesInPlayer = dir;
+              if (!isExist(fileName, dir)) {
+                const path = Path.resolve(
+                  "../remote_media_player/app/media",
+                  fileName.replace(/\s/g, "")
+                ); //save directly to player
+                const fstream = Fs.createWriteStream(path);
+                var uri = server + remoteList[index].media_url + "/";
+                const config = {
+                  method: "get",
+                  responseType: "stream",
+                };
+                console.log("istek gönderiliyor");
+                axios.get(uri, config).then(function (res) {
+                  res.data.pipe(fstream);
+                });
+                fstream.on("close", function () {
+                  readFile(fileName, remoteList[index].duration);
+                });
+              }
             }
           }
         );
-        if (!isExist(fileName, filesInPlayer)) {
-          const path = Path.resolve(
-            "../remote_media_player/app/media",
-            fileName.replace(/\s/g, "")
-          ); //save directly to player
-          const fstream = Fs.createWriteStream(path);
-          var uri = server + remoteList[index].media_url + "/";
-          const config = {
-            method: "get",
-            responseType: "stream",
-          };
-          console.log("istek gönderiliyor");
-          axios.get(uri, config).then(function (res) {
-            res.data.pipe(fstream);
-          });
-          fstream.on("close", function () {
-            readFile(fileName, remoteList[index].duration);
-          });
-        }
       }
     });
 }
