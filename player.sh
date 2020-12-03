@@ -6,3 +6,6 @@ npm start # run player
 npm start # run again if something fail on player
 npm start # run again if something fail on player
 npm start # run again if something fail on player
+npm start # run again if something fail on player
+npm start # run again if something fail on player
+npm start # run again if something fail on player

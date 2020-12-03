@@ -138,7 +138,7 @@ internetAvailable({
   .then(function () {
     console.log("Internet available");
     // checkState();
-    timer = setInterval(checkState, 10000);
+    timer = setInterval(checkState, 60000);
   })
   .catch(function () {
     console.log("No internet");

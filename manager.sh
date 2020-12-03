@@ -8,4 +8,6 @@ npm install # install dependecies
 npm start # run player
 npm start # run again if something fail on player
 npm start # run again if something fail on player
-# Manager aşağıdaki komutları çalıştıracak
+npm start # run again if something fail on player
+npm start # run again if something fail on player
+npm start # run again if something fail on player
