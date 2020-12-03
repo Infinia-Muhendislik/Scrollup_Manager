@@ -119,6 +119,7 @@ async function checkState() {
 
 //var timer = setInterval(checkState, 1000);
 var timer;
+brightness(6);
 internetAvailable({
   timeout: 5000,
   retries: 10,
