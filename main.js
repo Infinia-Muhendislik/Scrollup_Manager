@@ -96,23 +96,24 @@ async function checkState() {
       for (let index = 0; index < remoteList.length; index++) {
         const fileName = remoteList[index].media_url.split("/").pop();
         // const path = Path.resolve(__dirname, "media", fileName);
-
-        const path = Path.resolve(
-          "../remote_media_player/app/media",
-          fileName.replace(/\s/g, "")
-        ); //save directly to player
-        const fstream = Fs.createWriteStream(path);
-        var uri = server + remoteList[index].media_url + "/";
-        const config = {
-          method: "get",
-          responseType: "stream",
-        };
-        axios.get(uri, config).then(function (res) {
-          res.data.pipe(fstream);
-        });
-        fstream.on("close", function () {
-          readFile(fileName, remoteList[index].duration);
-        });
+        if (!isInstalled(fileName)) {
+          const path = Path.resolve(
+            "../remote_media_player/app/media",
+            fileName.replace(/\s/g, "")
+          ); //save directly to player
+          const fstream = Fs.createWriteStream(path);
+          var uri = server + remoteList[index].media_url + "/";
+          const config = {
+            method: "get",
+            responseType: "stream",
+          };
+          axios.get(uri, config).then(function (res) {
+            res.data.pipe(fstream);
+          });
+          fstream.on("close", function () {
+            readFile(fileName, remoteList[index].duration);
+          });
+        }
       }
     });
 }
@@ -134,9 +135,18 @@ internetAvailable({
     global.clearTimeout(timer);
   });
 
-function isExist(fileName, arr) {
-  for (let index = 0; index < arr.length; index++) {
-    if (fileName == arr[index].fileName.split("/").pop()) return true;
-  }
-  return false;
+function isInstalled(fileName) {
+  fs.readdir(
+    path.join(__dirname, "../remote_media_player/app/media"),
+    function (err, dir) {
+      if (err) console.log(err);
+      else {
+        console.log("Files found in player: " + dir);
+        for (let index = 0; index < dir.length; index++) {
+          if (fileName == dir[index].split("/").pop()) return true;
+        }
+        return false;
+      }
+    }
+  );
 }
