@@ -7,6 +7,7 @@ var internetAvailable = require("internet-available");
 var target = "http://127.0.0.1:4631";
 const server = "http://192.168.88.42:8000";
 var remoteList;
+var filesInPlayer;
 var play = false;
 var loop = false;
 
@@ -96,7 +97,16 @@ async function checkState() {
       for (let index = 0; index < remoteList.length; index++) {
         const fileName = remoteList[index].media_url.split("/").pop();
         // const path = Path.resolve(__dirname, "media", fileName);
-        if (isInstalled(fileName) == false) {
+        Fs.readdir(
+          Path.join(__dirname, "../remote_media_player/app/media"),
+          function (err, dir) {
+            if (err) console.log(err);
+            else {
+              filesInPlayer = dir;
+            }
+          }
+        );
+        if (!isExist(fileName, filesInPlayer)) {
           const path = Path.resolve(
             "../remote_media_player/app/media",
             fileName.replace(/\s/g, "")
@@ -136,21 +146,12 @@ internetAvailable({
     global.clearTimeout(timer);
   });
 
-function isInstalled(fileName) {
-  var state;
-  Fs.readdir(
-    Path.join(__dirname, "../remote_media_player/app/media"),
-    function (err, dir) {
-      if (err) console.log(err);
-      else {
-        for (let index = 0; index < dir.length; index++) {
-          if (fileName == dir[index]) {
-            console.log(dir[index] + " founded");
-            state = true;
-          } else state = false;
-        }
-      }
+function isExist(fileName, arr) {
+  for (let index = 0; index < arr.length; index++) {
+    if (fileName == arr[index]) {
+      console.log(arr[index] + " already installed");
+      return true;
     }
-  );
-  return state;
+  }
+  return false;
 }
