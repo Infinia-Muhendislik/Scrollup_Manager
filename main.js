@@ -137,6 +137,7 @@ internetAvailable({
   });
 
 function isInstalled(fileName) {
+  var state;
   Fs.readdir(
     Path.join(__dirname, "../remote_media_player/app/media"),
     function (err, dir) {
@@ -146,12 +147,12 @@ function isInstalled(fileName) {
           console.log(fileName, dir[index]);
           if (fileName == dir[index]) {
             console.log(dir[index] + " founded");
-            return true;
+            state = true;
           }
         }
-        return false;
+        state = false;
       }
     }
   );
-  return false;
+  return state;
 }
