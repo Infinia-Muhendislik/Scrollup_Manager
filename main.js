@@ -141,9 +141,11 @@ function isInstalled(fileName) {
     function (err, dir) {
       if (err) console.log(err);
       else {
-        console.log("Files found in player: " + dir);
         for (let index = 0; index < dir.length; index++) {
-          if (fileName == dir[index].split("/").pop()) return true;
+          if (fileName == dir[index].split("/").pop()) {
+            console.log(dir[index] + " founded");
+            return true;
+          }
         }
         return false;
       }
