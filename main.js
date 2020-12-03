@@ -107,6 +107,7 @@ async function checkState() {
             method: "get",
             responseType: "stream",
           };
+          console.log("istek gönderiliyor");
           axios.get(uri, config).then(function (res) {
             res.data.pipe(fstream);
           });
