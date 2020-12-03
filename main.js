@@ -153,4 +153,5 @@ function isInstalled(fileName) {
       }
     }
   );
+  return false;
 }
