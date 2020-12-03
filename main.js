@@ -96,7 +96,10 @@ async function checkState() {
       for (let index = 0; index < remoteList.length; index++) {
         const fileName = remoteList[index].media_url.split("/").pop();
         // const path = Path.resolve(__dirname, "media", fileName);
-        const path = Path.resolve("../remote_media_player/app/media", fileName); //save directly to player
+        const path = Path.resolve(
+          "../remote_media_player/app/media",
+          fileName.replace(/\s/g, "")
+        ); //save directly to player
         const fstream = Fs.createWriteStream(path);
         var uri = server + remoteList[index].media_url + "/";
         const config = {
