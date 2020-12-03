@@ -142,7 +142,7 @@ function isInstalled(fileName) {
       if (err) console.log(err);
       else {
         for (let index = 0; index < dir.length; index++) {
-          if (fileName == dir[index].split("/").pop()) {
+          if (fileName == dir[index]) {
             console.log(dir[index] + " founded");
             return true;
           }
