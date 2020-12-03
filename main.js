@@ -96,7 +96,7 @@ async function checkState() {
       for (let index = 0; index < remoteList.length; index++) {
         const fileName = remoteList[index].media_url.split("/").pop();
         // const path = Path.resolve(__dirname, "media", fileName);
-        if (!isInstalled(fileName)) {
+        if (isInstalled(fileName) == false) {
           const path = Path.resolve(
             "../remote_media_player/app/media",
             fileName.replace(/\s/g, "")
