@@ -117,7 +117,7 @@ async function checkState() {
 }
 
 //var timer = setInterval(checkState, 1000);
-
+var timer;
 internetAvailable({
   timeout: 5000,
   retries: 10,
@@ -125,8 +125,9 @@ internetAvailable({
   .then(function () {
     console.log("Internet available");
     // checkState();
-    setInterval(checkState, 10000);
+    timer = setInterval(checkState, 10000);
   })
   .catch(function () {
     console.log("No internet");
+    global.clearTimeout(timer);
   });
