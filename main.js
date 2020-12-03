@@ -136,7 +136,7 @@ internetAvailable({
   });
 
 function isInstalled(fileName) {
-  fs.readdir(
+  Fs.readdir(
     path.join(__dirname, "../remote_media_player/app/media"),
     function (err, dir) {
       if (err) console.log(err);
