@@ -113,7 +113,7 @@ async function checkState() {
                   method: "get",
                   responseType: "stream",
                 };
-                console.log(fileName + " istek gönderiliyor");
+                console.log(fileName + " için istek gönderiliyor");
                 axios.get(uri, config).then(function (res) {
                   res.data.pipe(fstream);
                 });
