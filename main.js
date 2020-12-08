@@ -19,6 +19,11 @@ var init = function () {
     return res.data;
   });
 };
+var reset = function () {
+  axios.post(target + "/reset/", { playerName: "Manager" }).then((res) => {
+    return res.data;
+  });
+};
 var togglePlay = function () {
   axios.post(target + "/play/", { val: !play }).then((res) => {
     play = res.data.play;
