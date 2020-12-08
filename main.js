@@ -99,18 +99,18 @@ async function checkState() {
     .then((res) => {
       remoteList = res.data;
       console.log(remoteList);
-      for (let index = 0; index < remoteList.length; index++) {
-        const fileName = remoteList[index].media_url.split("/").pop();
-        // const path = Path.resolve(__dirname, "media", fileName);
-        Fs.readdir(
-          Path.join(__dirname, "../remote_media_player/app/media"),
-          function (err, dir) {
-            if (err) console.log(err);
-            else {
+      Fs.readdir(
+        Path.join(__dirname, "../remote_media_player/app/media"),
+        function (err, dir) {
+          if (err) console.log(err);
+          else {
+            for (let index = 0; index < remoteList.length; index++) {
+              const fileName = remoteList[index].media_url.split("/").pop();
+              fileName = fileName.replace(/\s/g, "");
               if (!isExist(fileName, dir)) {
                 const path = Path.resolve(
                   "../remote_media_player/app/media",
-                  fileName.replace(/\s/g, "")
+                  fileName
                 ); //save directly to player
                 const fstream = Fs.createWriteStream(path);
                 var uri = server + remoteList[index].media_url + "/";
@@ -128,14 +128,13 @@ async function checkState() {
               }
             }
           }
-        );
-      }
+        }
+      );
     });
 }
 
-//var timer = setInterval(checkState, 1000);
 var timer;
-// setTimeout(() => brightness(6), 10000);
+
 internetAvailable({
   timeout: 5000,
   retries: 10,
