@@ -106,11 +106,10 @@ async function checkState() {
           else {
             for (let index = 0; index < remoteList.length; index++) {
               const fileName = remoteList[index].media_url.split("/").pop();
-              fileName = fileName.replace(/\s/g, "");
               if (!isExist(fileName, dir)) {
                 const path = Path.resolve(
                   "../remote_media_player/app/media",
-                  fileName
+                  fileName.replace(/\s/g, "")
                 ); //save directly to player
                 const fstream = Fs.createWriteStream(path);
                 var uri = server + remoteList[index].media_url + "/";
@@ -123,7 +122,10 @@ async function checkState() {
                   res.data.pipe(fstream);
                 });
                 fstream.on("close", function () {
-                  readFile(fileName, remoteList[index].duration);
+                  readFile(
+                    fileName.replace(/\s/g, ""),
+                    remoteList[index].duration
+                  );
                 });
               }
             }
