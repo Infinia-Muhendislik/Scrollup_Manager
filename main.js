@@ -129,6 +129,11 @@ async function checkState() {
                 });
               }
             }
+            for (let index = 0; index < dir.length; index++) {
+              if (!isExist(dir[index], remoteList)) {
+                // delet dis
+              }
+            }
           }
         }
       );
