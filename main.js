@@ -99,14 +99,13 @@ async function checkState() {
     .then((res) => {
       remoteList = res.data;
       console.log(remoteList);
-      for (let index = 0; index < remoteList.length; index++) {
-        const fileName = remoteList[index].media_url.split("/").pop();
-        // const path = Path.resolve(__dirname, "media", fileName);
-        Fs.readdir(
-          Path.join(__dirname, "../remote_media_player/app/media"),
-          function (err, dir) {
-            if (err) console.log(err);
-            else {
+      Fs.readdir(
+        Path.join(__dirname, "../remote_media_player/app/media"),
+        function (err, dir) {
+          if (err) console.log(err);
+          else {
+            for (let index = 0; index < remoteList.length; index++) {
+              const fileName = remoteList[index].media_url.split("/").pop();
               if (!isExist(fileName, dir)) {
                 const path = Path.resolve(
                   "../remote_media_player/app/media",
@@ -123,26 +122,27 @@ async function checkState() {
                   res.data.pipe(fstream);
                 });
                 fstream.on("close", function () {
-                  readFile(fileName, remoteList[index].duration);
+                  readFile(
+                    fileName.replace(/\s/g, ""),
+                    remoteList[index].duration
+                  );
                 });
               }
             }
           }
-        );
-      }
+        }
+      );
     });
 }
 
-//var timer = setInterval(checkState, 1000);
 var timer;
-// setTimeout(() => brightness(6), 10000);
+
 internetAvailable({
   timeout: 5000,
   retries: 10,
 })
   .then(function () {
     console.log("Internet available");
-    // checkState();
     timer = setInterval(checkState, 60000);
   })
   .catch(function () {
