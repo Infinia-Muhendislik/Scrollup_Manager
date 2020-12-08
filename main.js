@@ -143,7 +143,6 @@ internetAvailable({
 })
   .then(function () {
     console.log("Internet available");
-    // checkState();
     timer = setInterval(checkState, 60000);
   })
   .catch(function () {
