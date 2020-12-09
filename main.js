@@ -107,6 +107,33 @@ function isExistRemote(fileName, arr) {
   return false;
 }
 
+async function updateRemoteDuration() {
+  if (remoteList != undefined || remoteList.length > 0 || myPlayer != undefined) {
+    for (let i = 0; i < myPlayer.playList.length; i++) {
+      for (let j = 0; j < remoteList.length; j++) {
+        if (Path.basename(remoteList[j].media_url) == Path.basename(myPlayer.playList[i].fileName)) {
+          console.log({
+            id: myPlayer.playList[i].id,
+            duration: remoteList[j].duration,
+          });
+          if (remoteList[j].duration != myPlayer.playList[i].duration) {
+            updateDuration(myPlayer.playList[i].id, remoteList[j].duration);
+            console.log(myPlayer.playList[i].id + " için duration değiştirildi");
+            // axios
+            //   .post(target + "/updateDuration/", {
+            //     id: myPlayer.playList[i].id,
+            //     duration: remoteList[j].duration,
+            //   })
+            //   .then((res) => {
+            //     console.log(id + " için duration değiştirildi");
+            //   });
+          }
+        }
+      }
+    }
+  } else return false;
+}
+
 async function deleteLocals() {
   if (remoteList != undefined || remoteList.length > 0) {
     Fs.readdir(Path.join(__dirname, "../remote_media_player/app/media"), function (err, dir) {
