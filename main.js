@@ -107,6 +107,29 @@ function isExistRemote(fileName, arr) {
   return false;
 }
 
+async function deleteLocals() {
+  if (remoteList != undefined || remoteList.length > 0) {
+    Fs.readdir(Path.join(__dirname, "../remote_media_player/app/media"), function (err, dir) {
+      if (err) console.log(err);
+      else {
+        for (let index = 0; index < dir.length; index++) {
+          if (!isExistRemote(dir[index], remoteList)) {
+            console.log(dir[index] + " için silme başlatılıyor");
+            axios.post(target + "/init/", { playerName: "Manager" }).then((res) => {
+              myPlayer = res.data;
+              for (j = 0; j < myPlayer.playList.length; j++) {
+                if (dir[index] == Path.basename(myPlayer.playList[j].fileName)) {
+                  deleteMedia(myPlayer.playList[j].id);
+                }
+              }
+            });
+          }
+        }
+      }
+    });
+  }
+}
+
 async function checkState() {
   axios
     .get(server + "/api/oynatma-listesi/", {
