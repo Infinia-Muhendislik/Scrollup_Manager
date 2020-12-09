@@ -5,9 +5,9 @@ const Path = require("path");
 var internetAvailable = require("internet-available");
 
 var target = "http://127.0.0.1:4631";
-const server = "http://192.168.88.42:8000";
+const server = "http://127.0.0.1:8000";
 var remoteList;
-var filesInPlayer;
+var myPlayer;
 var play = false;
 var loop = false;
 
@@ -16,7 +16,16 @@ console.log(scrollupID);
 
 var init = function () {
   axios.post(target + "/init/", { playerName: "Manager" }).then((res) => {
-    return res.data;
+    myPlayer = res.data;
+    axios
+      .get(server + "/api/oynatma-listesi/", {
+        params: {
+          slug: scrollupID,
+        },
+      })
+      .then((res) => {
+        remoteList = res.data;
+      });
   });
 };
 var reset = function () {
@@ -66,11 +75,9 @@ var deleteMedia = function (id) {
   });
 };
 var updateDuration = function (id, duration) {
-  axios
-    .post(target + "/updateDuration/", { id: id, duration: duration })
-    .then((res) => {
-      return res.data;
-    });
+  axios.post(target + "/updateDuration/", { id: id, duration: duration }).then((res) => {
+    console.log(id + " için duration değiştirildi");
+  });
 };
 var updateList = function (id, to) {
   axios.post(target + "/updateList/", { id: id, to: to }).then((res) => {
