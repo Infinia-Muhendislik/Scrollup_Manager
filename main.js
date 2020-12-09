@@ -60,6 +60,7 @@ var setSize = function (width, height) {
   });
 };
 var deleteMedia = function (id) {
+  console.log(id + " için silme isteği gönderiliyor");
   axios.post(target + "/deleteMedia/", { id: id }).then((res) => {
     return res.data;
   });
@@ -82,12 +83,29 @@ var playFrom = function (index) {
   });
 };
 var readFile = function (name, duration) {
-  axios
-    .post(target + "/readFile/", { fileName: name, duration: duration })
-    .then((res) => {
-      // console.log(res.data);
-    });
+  axios.post(target + "/readFile/", { fileName: name, duration: duration }).then((res) => {
+    myPlayer = res.data;
+  });
 };
+
+function isExist(fileName, arr) {
+  for (let index = 0; index < arr.length; index++) {
+    if (fileName == arr[index]) {
+      console.log(arr[index] + " already installed");
+      return true;
+    }
+  }
+  return false;
+}
+
+function isExistRemote(fileName, arr) {
+  for (let index = 0; index < arr.length; index++) {
+    if (fileName == Path.basename(arr[index].media_url)) {
+      return true;
+    }
+  }
+  return false;
+}
 
 async function checkState() {
   axios
@@ -99,68 +117,49 @@ async function checkState() {
     .then((res) => {
       remoteList = res.data;
       console.log(remoteList);
-      Fs.readdir(
-        Path.join(__dirname, "../remote_media_player/app/media"),
-        function (err, dir) {
-          if (err) console.log(err);
-          else {
-            for (let index = 0; index < remoteList.length; index++) {
-              const fileName = remoteList[index].media_url.split("/").pop();
-              if (!isExist(fileName, dir)) {
-                const path = Path.resolve(
-                  "../remote_media_player/app/media",
-                  fileName.replace(/\s/g, "")
-                ); //save directly to player
-                const fstream = Fs.createWriteStream(path);
-                var uri = server + remoteList[index].media_url + "/";
-                const config = {
-                  method: "get",
-                  responseType: "stream",
-                };
-                console.log(fileName + " için istek gönderiliyor");
-                axios.get(uri, config).then(function (res) {
-                  res.data.pipe(fstream);
+      Fs.readdir(Path.join(__dirname, "../remote_media_player/app/media"), function (err, dir) {
+        if (err) console.log(err);
+        else {
+          for (let index = 0; index < remoteList.length; index++) {
+            const fileName = Path.basename(remoteList[index].media_url);
+            if (!isExist(fileName, dir)) {
+              const path = Path.resolve("../remote_media_player/app/media", fileName.replace(/\s/g, "")); //save directly to player
+              const fstream = Fs.createWriteStream(path);
+              var uri = server + remoteList[index].media_url + "/";
+              const config = {
+                method: "get",
+                responseType: "stream",
+              };
+              console.log(fileName + " için istek gönderiliyor");
+              axios.get(uri, config).then(function (res) {
+                res.data.pipe(fstream);
+              });
+              fstream.on("close", function () {
+                // readFile(fileName.replace(/\s/g, ""), remoteList[index].duration);
+                axios.post(target + "/readFile/", { fileName: fileName.replace(/\s/g, ""), duration: remoteList[index].duration }).then((res) => {
+                  myPlayer = res.data;
                 });
-                fstream.on("close", function () {
-                  readFile(
-                    fileName.replace(/\s/g, ""),
-                    remoteList[index].duration
-                  );
-                });
-              }
-            }
-            for (let index = 0; index < dir.length; index++) {
-              if (!isExist(dir[index], remoteList)) {
-                // delet dis
-              }
+              });
             }
           }
         }
-      );
+      });
     });
 }
 
 var timer;
-
+init();
 internetAvailable({
   timeout: 5000,
   retries: 10,
 })
   .then(function () {
     console.log("Internet available");
-    timer = setInterval(checkState, 60000);
+    setInterval(checkState, 5000);
+    setInterval(deleteLocals, 10000);
+    setInterval(updateRemoteDuration, 10000);
   })
   .catch(function () {
     console.log("No internet");
     global.clearTimeout(timer);
   });
-
-function isExist(fileName, arr) {
-  for (let index = 0; index < arr.length; index++) {
-    if (fileName == arr[index]) {
-      console.log(arr[index] + " already installed");
-      return true;
-    }
-  }
-  return false;
-}
