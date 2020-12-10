@@ -18,7 +18,7 @@ var init = function () {
   axios.post(target + "/init/", { playerName: "Manager" }).then((res) => {
     myPlayer = res.data;
     axios
-      .get(server + "/api/oynatma-listesi/", {
+      .get(server + "/api/oynatma-listesi/get/", {
         params: {
           slug: scrollupID,
         },
@@ -168,7 +168,7 @@ async function checkState() {
   axios
     .get(server + "/api/oynatma-listesi/get/", {
       params: {
-        slug: scrollupID,
+        s_id: scrollupID,
       },
     })
     .then((res) => {
