@@ -166,7 +166,7 @@ async function deleteLocals() {
 
 async function checkState() {
   axios
-    .get(server + "/api/oynatma-listesi/", {
+    .get(server + "/api/oynatma-listesi/get/", {
       params: {
         slug: scrollupID,
       },
