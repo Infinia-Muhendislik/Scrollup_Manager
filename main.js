@@ -12,7 +12,7 @@ var play = false;
 var loop = false;
 
 var scrollupID = process.env.ID;
-var s_key = process.env.s_key;
+var s_key = process.env.key;
 console.log("Scrollup: " + scrollupID);
 
 var init = function () {
@@ -21,7 +21,8 @@ var init = function () {
     axios
       .get(server + "/api/oynatma-listesi/get/", {
         params: {
-          slug: scrollupID,
+          s_id: scrollupID,
+          key: s_key,
         },
       })
       .then((res) => {
@@ -207,7 +208,7 @@ internetAvailable({
   .then(function () {
     console.log("Internet available");
     setInterval(checkState, 5000);
-    setInterval(deleteLocals, 10000);
+    // setInterval(deleteLocals, 10000);
     setInterval(updateRemoteDuration, 10000);
   })
   .catch(function () {
