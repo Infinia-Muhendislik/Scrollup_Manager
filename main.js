@@ -142,15 +142,17 @@ async function deleteLocals() {
       else {
         for (let index = 0; index < dir.length; index++) {
           if (!isExistRemote(dir[index], remoteList)) {
-            console.log(dir[index] + " için silme başlatılıyor");
-            axios.post(target + "/init/", { playerName: "Manager" }).then((res) => {
-              myPlayer = res.data;
-              for (j = 0; j < myPlayer.playList.length; j++) {
-                if (dir[index] == Path.basename(myPlayer.playList[j].fileName)) {
-                  deleteMedia(myPlayer.playList[j].id);
+            if (dir[index] != ".gitignore") {
+              console.log(dir[index] + " için silme başlatılıyor");
+              axios.post(target + "/init/", { playerName: "Manager" }).then((res) => {
+                myPlayer = res.data;
+                for (j = 0; j < myPlayer.playList.length; j++) {
+                  if (dir[index] == Path.basename(myPlayer.playList[j].fileName)) {
+                    deleteMedia(myPlayer.playList[j].id);
+                  }
                 }
-              }
-            });
+              });
+            }
           }
         }
       }
