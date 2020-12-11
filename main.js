@@ -5,14 +5,15 @@ const Path = require("path");
 var internetAvailable = require("internet-available");
 
 var target = "http://127.0.0.1:4631";
-const server = "http://127.0.0.1:8000";
+const server = "https://app.scrollup.net";
 var remoteList;
 var myPlayer;
 var play = false;
 var loop = false;
 
 var scrollupID = process.env.ID;
-console.log(scrollupID);
+var s_key = process.env.s_key;
+console.log("Scrollup: " + scrollupID);
 
 var init = function () {
   axios.post(target + "/init/", { playerName: "Manager" }).then((res) => {
@@ -126,14 +127,6 @@ async function updateRemoteDuration() {
           if (remoteList[j].duration != myPlayer.playList[i].duration) {
             updateDuration(myPlayer.playList[i].id, remoteList[j].duration);
             console.log(myPlayer.playList[i].id + " için duration değiştirildi");
-            // axios
-            //   .post(target + "/updateDuration/", {
-            //     id: myPlayer.playList[i].id,
-            //     duration: remoteList[j].duration,
-            //   })
-            //   .then((res) => {
-            //     console.log(id + " için duration değiştirildi");
-            //   });
           }
         }
       }
@@ -169,6 +162,7 @@ async function checkState() {
     .get(server + "/api/oynatma-listesi/get/", {
       params: {
         s_id: scrollupID,
+        key: s_key,
       },
     })
     .then((res) => {
