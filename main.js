@@ -5,7 +5,7 @@ const Path = require("path");
 var internetAvailable = require("internet-available");
 
 var target = "http://127.0.0.1:4631";
-const server = "http://127.0.0.1:8000";
+const server = "https://app.scrollup.net";
 var remoteList;
 var myPlayer;
 var play = false;
