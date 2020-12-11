@@ -115,11 +115,16 @@ function isExistRemote(fileName, arr) {
   return false;
 }
 
+function getFileExtension(filename) {
+  return filename.split(".").pop();
+}
+
 async function updateRemoteDuration() {
   if (remoteList != undefined || remoteList.length > 0 || myPlayer != undefined) {
     for (let i = 0; i < myPlayer.playList.length; i++) {
       for (let j = 0; j < remoteList.length; j++) {
-        if (Path.basename(remoteList[j].media_url) == Path.basename(myPlayer.playList[i].fileName)) {
+        var extension = getFileExtension(remoteList[j].media_url);
+        if (Path.basename(remoteList[j].media_url) == Path.basename(myPlayer.playList[i].fileName) || extension != "mp4" || extension != "mov") {
           console.log({
             id: myPlayer.playList[i].id,
             duration: remoteList[j].duration,
