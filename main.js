@@ -117,7 +117,7 @@ function isExistRemote(fileName, arr) {
 }
 
 async function updateRemoteDuration() {
-  if (remoteList != undefined || remoteList.length > 0 || myPlayer != undefined) {
+  if (remoteList != undefined && remoteList.length > 0 && myPlayer != undefined) {
     for (let i = 0; i < myPlayer.playList.length; i++) {
       for (let j = 0; j < remoteList.length; j++) {
         if (Path.basename(remoteList[j].media_url) == Path.basename(myPlayer.playList[i].fileName)) {
@@ -136,7 +136,7 @@ async function updateRemoteDuration() {
 }
 
 async function deleteLocals() {
-  if (remoteList != undefined || remoteList.length > 0) {
+  if (remoteList != undefined && remoteList.length > 0) {
     Fs.readdir(Path.join(__dirname, "../remote_media_player/app/media"), function (err, dir) {
       if (err) console.log(err);
       else {
