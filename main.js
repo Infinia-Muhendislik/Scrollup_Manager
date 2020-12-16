@@ -210,7 +210,7 @@ internetAvailable({
   .then(function () {
     console.log("Internet available");
     setInterval(checkState, 5000);
-    // setInterval(deleteLocals, 10000);
+    setInterval(deleteLocals, 10000);
     setInterval(updateRemoteDuration, 10000);
   })
   .catch(function () {
