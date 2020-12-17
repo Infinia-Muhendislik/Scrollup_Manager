@@ -209,9 +209,9 @@ internetAvailable({
 })
   .then(function () {
     console.log("Internet available");
-    setInterval(checkState, 5000);
-    setInterval(deleteLocals, 10000);
-    setInterval(updateRemoteDuration, 10000);
+    setInterval(checkState, 30000);
+    setInterval(deleteLocals, 39000);
+    setInterval(updateRemoteDuration, 37000);
   })
   .catch(function () {
     console.log("No internet");
