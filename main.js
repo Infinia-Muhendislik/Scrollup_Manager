@@ -21,7 +21,7 @@ service.use(express.urlencoded());
 service.use(express.json());
 
 service.post("/resetNetwork", function (req, res) {
-  console.log("PlayerName: " + req.body.playerName);
+  console.log("Wifi network reset from: " + req.body.playerName);
   exec("sudo python3 /usr/lib/raspiwifi/reset_device/manual_reset.py", (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
