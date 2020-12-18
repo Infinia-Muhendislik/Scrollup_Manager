@@ -3,6 +3,38 @@ require("dotenv").config();
 const Fs = require("fs");
 const Path = require("path");
 var internetAvailable = require("internet-available");
+var express = require("express"),
+  path = require("path"),
+  service = express();
+const { exec } = require("child_process");
+
+service.set("port", process.env.PORT || 46311);
+service.use(express.static("public"));
+service.listen(service.get("port"), function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Running on port: " + service.get("port"));
+  }
+});
+service.use(express.urlencoded());
+service.use(express.json());
+
+service.post("/resetNetwork", function (req, res) {
+  console.log("PlayerName: " + req.body.playerName);
+  exec("sudo python3 /usr/lib/raspiwifi/reset_device/manual_reset.py", (error, stdout, stderr) => {
+    if (error) {
+      console.log(`error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.log(`stderr: ${stderr}`);
+      return;
+    }
+    console.log(`stdout: ${stdout}`);
+  });
+  res.sendStatus(200);
+});
 
 var target = "http://127.0.0.1:4631";
 const server = "https://app.scrollup.net";
