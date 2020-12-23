@@ -1,3 +1,5 @@
+sudo pkill node
+sleep 1.99
 cd /home/pi/Scrollup_Manager/ # go folder
 chmod +x player.sh
 lxterminal -e "./player.sh"
