@@ -37,7 +37,7 @@ service.post("/resetNetwork", function (req, res) {
 });
 
 var target = "http://127.0.0.1:4631";
-const server = "https://app.scrollup.net";
+const domain = "https://app.scrollup.net";
 var remoteList;
 var myPlayer;
 var play = false;
@@ -51,7 +51,7 @@ var init = function () {
   axios.post(target + "/init/", { playerName: "Manager" }).then((res) => {
     myPlayer = res.data;
     axios
-      .get(server + "/api/oynatma-listesi/get/", {
+      .get(domain + "/api/oynatma-listesi/get/", {
         params: {
           s_id: scrollupID,
           key: s_key,
@@ -194,7 +194,7 @@ async function deleteLocals() {
 
 async function checkState() {
   axios
-    .get(server + "/api/oynatma-listesi/get/", {
+    .get(domain + "/api/oynatma-listesi/get/", {
       params: {
         s_id: scrollupID,
         key: s_key,
@@ -211,7 +211,7 @@ async function checkState() {
             if (!isExist(fileName, dir)) {
               const path = Path.resolve("../remote_media_player/app/media", fileName.replace(/\s/g, "")); //save directly to player
               const fstream = Fs.createWriteStream(path);
-              var uri = server + remoteList[index].media_url + "/";
+              var uri = domain + remoteList[index].media_url + "/";
               const config = {
                 method: "get",
                 responseType: "stream",
