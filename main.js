@@ -10,7 +10,7 @@ const { exec } = require("child_process");
 
 service.set("port", process.env.PORT || 46311);
 service.use(express.static("public"));
-service.listen(service.get("port"), function (err) {
+const server = service.listen(service.get("port"), function (err) {
   if (err) {
     console.log(err);
   } else {
@@ -250,7 +250,22 @@ internetAvailable({
     global.clearTimeout(timer);
   });
 
-process.on("uncaughtException", function (value) {
-  console.log(value);
-  service.close();
-});
+process.on("uncaughtException", shutDown);
+process.on("SIGTERM", shutDown);
+process.on("SIGINT", shutDown);
+
+function shutDown() {
+  console.log("Received kill signal, shutting down gracefully");
+  server.close(() => {
+    console.log("Closed out remaining connections");
+    process.exit(0);
+  });
+
+  setTimeout(() => {
+    console.error("Could not close connections in time, forcefully shutting down");
+    process.exit(1);
+  }, 10000);
+
+  // connections.forEach((curr) => curr.end());
+  // setTimeout(() => connections.forEach((curr) => curr.destroy()), 5000);
+}
