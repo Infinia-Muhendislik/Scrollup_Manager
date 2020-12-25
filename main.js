@@ -249,3 +249,8 @@ internetAvailable({
     console.log("No internet");
     global.clearTimeout(timer);
   });
+
+process.on("uncaughtException", function (value) {
+  console.log(value);
+  service.close();
+});
