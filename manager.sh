@@ -9,8 +9,13 @@ git fetch --all # check update
 git reset --hard origin/master # pull update and ignore stash
 npm install # install dependecies
 npm start # run player
+sleep 2.99
 npm start # run again if something fail on player
+sleep 2.99
 npm start # run again if something fail on player
+sleep 2.99
 npm start # run again if something fail on player
+sleep 2.99
 npm start # run again if something fail on player
+sleep 2.99
 npm start # run again if something fail on player
